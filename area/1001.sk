@@ -1,0 +1,58 @@
+#
+# Veilwood Manor
+#
+# /tp @s -527 128 155
+#
+
+every tick:
+    loop all players:
+        ## 座標を確認
+        if loop-player is within location(-527,128,155) and location(-524,136,158):
+            add 0 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-511,128,159) and location(-508,133,161):
+            add 1 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-501,132,154) and location(-498,136,156):
+            add 2 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-492,138,151) and location(-490,143,154):
+            add 3 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-497,140,146) and location(-495,143,148):
+            add 4 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-498,131,133) and location(-496,136,135):
+            add 5 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-498,138,133) and location(-496,143,135):
+            add 6 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-510,131,135) and location(-508,135,137):
+            add 7 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-518,131,135) and location(-515,136,137):
+            add 8 to {_hdm::%uuid of loop-player%.conditions::*}
+        if loop-player is within location(-530,137,149) and location(-528,143,152):
+            add 9 to {_hdm::%uuid of loop-player%.conditions::*}
+
+        ## if
+        {_hdm::%uuid of loop-player%.conditions::*} is set
+        {hdm::%uuid of loop-player%.enteredArea::*} do not contain 1001
+
+        # core
+        ## タイトル
+        reset title of loop-player
+        send title "<yellow><bold>Veilwood Manor" to loop-player for 2 seconds with fade in 1 second and fade out 1 second
+        send subtitle "<gray><underlined>ヴェイルウッド・マナー" to loop-player
+
+        ## 説明
+        send "" to loop-player
+        send "======================================" to loop-player
+        send "" to loop-player
+        send "       <gray>ヴェイルウッド・マナー" to loop-player
+        send "<bold>      <yellow><bold><underlined>Veilwood Manor" to loop-player
+        send "" to loop-player
+        send "<italic>住宅区にある大きなお屋敷。" to loop-player
+        send "<italic>住民達の長である長老が住んでいる。" to loop-player
+        send "<italic>彼しかしらない秘密の場所があるらしい。" to loop-player
+        send "" to loop-player
+        send "======================================" to loop-player
+
+        ## 音
+        play sound "block.portal.trigger" with volume 0.125 with pitch 1.00 to loop-player
+
+        ## フラグを立てる
+        add 1001 to {hdm::%uuid of loop-player%.enteredArea::*}

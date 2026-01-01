@@ -1,0 +1,22 @@
+#
+# パーティクル処理のトグルコマンド
+#
+
+command /toggle_obj <int>:
+    trigger:
+        # 引数の要素のパーティクルが表示中だったら
+        if {hdm::objects::*} do not contain arg-1:
+            ## 要素を追加
+            add arg-1 to {hdm::objects::*}
+            ## 伝える
+            message "<aqua>%arg-1%番<white>のパーティクルを表示します。" to player
+        else:
+            ## 要素を削除
+            remove arg-1 from {hdm::objects::*}
+            ## 伝える
+            message "<aqua>%arg-1%番<white>のパーティクルを表示しません。" to player
+
+
+on tab complete of "/toggle_obj":
+    # 登録されたパーティクルを表示する
+    set tab completions for position 1 to {hdm::registeredObjects::*}

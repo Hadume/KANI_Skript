@@ -1,0 +1,13 @@
+#
+#
+#
+
+on load:
+    if {hdm::registeredObjects::*} do not contain 3004:
+        add 3004 to {hdm::registeredObjects::*}
+
+every 2 ticks:
+    if {hdm::objects::*} contain 3004:
+        # -659.5 98.5 359.5
+        # execute if predicate {condition:"random_chance",chance:0.5} run particle glow ~3 ~-2 ~-3 5 1 2 0.0001 1 normal
+        make 1 glow at location(-656.5, 96.5, 356.5) with delta vector(5, 1, 2) with extra 0.0001

@@ -1,3 +1,7 @@
+#
+# エリア侵入情報をマニュアルでリセットする
+#
+
 command /reset_area:
     permission: Admin.Permission
     trigger:

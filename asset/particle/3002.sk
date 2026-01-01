@@ -1,0 +1,13 @@
+#
+#
+#
+
+on load:
+    if {hdm::registeredObjects::*} do not contain 3002:
+        add 3002 to {hdm::registeredObjects::*}
+
+every ticks:
+    if {hdm::objects::*} contain 3002:
+        # -649.5 102.5 189.5
+        # particle end_rod ~2 ~-2.5 ~ 2 2 4 0 1 normal
+        make 1 end_rod at location(-647.5, 100, 189.5) with delta vector(2, 2, 4) with extra 0

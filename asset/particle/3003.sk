@@ -1,0 +1,13 @@
+#
+#
+#
+
+on load:
+    if {hdm::registeredObjects::*} do not contain 3003:
+        add 3003 to {hdm::registeredObjects::*}
+
+every 2 ticks:
+    if {hdm::objects::*} contain 3003:
+        # -475.5 129.5 147.5
+        # execute if predicate {condition:"random_chance",chance:0.25} run particle end_rod ~1 ~2 ~ 1.5 1 2 0 1 normal
+        make 1 end_rod at location(-474.5, 131.5, 147.5) with delta vector(1.5, 1, 2) with extra 0

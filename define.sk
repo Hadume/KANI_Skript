@@ -1,0 +1,13 @@
+on load:
+    # 観光客用
+    if team "visitor" is not registered:
+        execute console command "/team add visitor"
+        execute console command "/team modify visitor collisionRule pushOtherTeams"
+
+    # 鯖民用
+    if team "admin" is not registered:
+        execute console command "/team add admin"
+        execute console command "/team modify admin color gold"
+        execute console command "/team modify admin collisionRule pushOtherTeams"
+
+    # 蟹さん用

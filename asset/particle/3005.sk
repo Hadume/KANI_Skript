@@ -1,0 +1,13 @@
+#
+#
+#
+
+on load:
+    if {hdm::registeredObjects::*} do not contain 3005:
+        add 3005 to {hdm::registeredObjects::*}
+
+every ticks:
+    if {hdm::objects::*} contain 3005:
+        # -496.5 72.5 205.5
+        # particle firework ~2 ~8 ~-5 5 5 4 0.01 1 force
+        make 1 firework at location(-494.5, 80.5, 200.5) with delta vector(5, 5, 4) with extra 0.01 with force

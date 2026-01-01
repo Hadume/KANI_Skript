@@ -1,0 +1,85 @@
+#
+# 占い
+#
+
+# 手動での占いコマンド
+command /fortune_telling [<string>]:
+    description: description
+    permission: permission
+    trigger:
+        ## 占いをやめる
+        if arg-1 is "reset":
+            cancel task with id {hdm::%uuid of player%.ftTask}
+            message "<red>占い状態をリセットしました。" to player
+            stop
+        ## 占いを始める
+        if arg-1 is not set:
+
+            main(player, "%uuid of player%")
+            stop
+
+        ## どの条件にも一致しなかったら
+        message "<dark red>そんなコマンドは存在しないヨ！" to player
+
+on tab complete of "/fortune_telling":
+    # リセット
+    set tab completions for position 1 to "reset"
+    # spawn a zombie at the player
+    spawn a armor stand at the player
+    spawn an armor stand at location(603, 100, 365)
+    # spawn 1 of zombie at player with nbt nbt compound from "{NoGravity:1b}"
+    # spawn an armor stand at player with nbt from "{Small:1b,NoBasePlate:1b,Marker:1b}"
+    # spawn falling snow[layers=3] at target block with nbt from "{HurtEntities:1b}"
+    # summon zombie at the player with nbt "{NoGravity:1b}"
+    set {_n} to nbt compound from "{NoAI:1b}"
+    set {_a} to nbt of player
+
+
+
+# 占いを始める処理
+function main(p: player, uuid: string):
+    run task 0 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "おぬし！" to {_p}
+    run task 2 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "よくない運気の流れがきておるぞ！" to {_p}
+    run task 4 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "わしが占ってやる！" to {_p}
+    run task 6 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "わしが占ってやる！" to {_p}
+        # spawn armor stand at location(603, 100, 365) with nbt from "{NoGravity:1b}"
+    run task 10 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "今日は、カニに恵まれそうだね" to {_p}
+    run task 12 seconds later for {_p} and store id in {hdm::%{_uuid}%.ftTask}:
+        message "もう、やらないからねー" to {_p}
+
+# え、占いしたいの？
+# めんどくさいなぁ
+# (占いをする)
+# はいはい、
+# 今日は、カニに恵まれそうだね
+# じゃ。もう、こないでねー
+
+# よくぞいらっしゃいました
+# あなたの未来を占わせていただきます
+# (占う)
+# 本日は、足の調子に気を付けてください
+# では、
+# カニのご加護があらんことを
+
+# おぬし！
+# よくない運気の流れがきておるぞ！
+# わしが占ってやる！
+# (占う)
+# おお！見えるぞ！
+# おぬしが、たくさんのカニに囲まれてる姿が！
+
+# お兄ちゃん！
+# あぐがお兄ちゃんのこと占ってあげる
+# (占う)
+# あ！見えたっ！
+# 今日は、身体の調子がすこぶる良くなりそうだよ
+# 今日一日、あぐも頑張るから、お兄ちゃんもがんばろうねっ！
+
+
+# 水晶座標: -603.5 100.5 365.5
+# あぐ君座標: -603.5 99.5 364.5, 座らせる

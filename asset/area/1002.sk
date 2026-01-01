@@ -6,15 +6,16 @@
 
 every tick:
     loop all players:
-        ## 座標を確認
+        # 座標を確認
         if loop-player is within location(-504,88,188) and location(-482,93,208):
             add 0 to {_hdm::%uuid of loop-player%.conditions::*}
         if loop-player is within location(-503,66,207) and location(-483,83,210):
             add 1 to {_hdm::%uuid of loop-player%.conditions::*}
 
-        ## if
+        # if
         {_hdm::%uuid of loop-player%.conditions::*} is set
         {hdm::%uuid of loop-player%.enteredArea::*} do not contain 1002
+
 
         # core
         ## タイトル

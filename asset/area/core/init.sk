@@ -1,0 +1,7 @@
+#
+# エリア情報を初期化
+#
+
+function initArea(p: string):
+    # エリア進入フラグをリセット
+    delete {hdm::%{_p}%.enteredArea::*}

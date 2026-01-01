@@ -1,0 +1,13 @@
+#
+#
+#
+
+on load:
+    if {hdm::registeredObjects::*} do not contain 3001:
+        add 3001 to {hdm::registeredObjects::*}
+
+every ticks:
+    if {hdm::objects::*} contain 3001:
+        # -501.5 98.5 257.5
+        # particle falling_obsidian_tear ~ ~10 ~ 12 2 20 1 5 force
+        make 5 falling_obsidian_tear at location(-501.5, 108.5, 257.5) with delta vector(12, 2, 20) with extra 1 with force

@@ -1,0 +1,55 @@
+options:
+    function: "particle"
+
+
+function enable_particle(p: player, particle_id: string):
+    add {_particle_id} to {objects::enabled::*}
+    debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを表示します")
+
+
+function disable_particle(p: player, particle_id: string):
+    remove {_particle_id} from {objects::enabled::*}
+    debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを表示します")
+
+
+on load:
+    if {COMMANDS::*} does not contain {@function}:
+        add {@function} to {COMMANDS::*}
+
+
+on command "/hdm particle":
+    if {objects::REGISTERED::*} contains arg-2:
+        if arg-3 is "enable":
+            if {objects::enabled::*} contains arg-2:
+                debug_message(player, "&cそのパーティクルは表示されてるよ！")
+            else:
+                enable_particle(player, arg-2)
+        else if arg-3 is "disable":
+            if {objects::enabled::*} contains arg-2:
+                disable_particle(player, arg-2)
+            else:
+                debug_message(player, "&cそのパーティクルは表示されてないよ！")
+        else:
+            if {objects::enabled::*} contains arg-2:
+                disable_particle(player, arg-2)
+            else:
+                enable_particle(player, arg-2)
+    else:
+        debug_message(player, "&cそのパーティクルは登録されていません")
+
+
+on command "/hdm cleanup particle":
+    delete {particle::*}
+    delete {particles::*}
+    debug_message(player, "パーティクル機能のデータを消しました")
+
+
+on command "/hdm reset particle":
+    debug_message(player, "パーティクル機能のデータをリセットしました")
+
+
+on tab complete:
+    if event-string is "/hdm" or "/skript:hdm":
+        if tab arg-1 is {@function}:
+            set tab completions for position 2 to {objects::REGISTERED::*}
+            set tab completions for position 3 to "enable" and "disable"

@@ -1,0 +1,49 @@
+options:
+    entrance_range_start: location(-671, 92, 350)
+    entrance_range_end: location(-650, 100, 362)
+
+
+function on_move_handler(p: player):
+    if {_p} is within {@entrance_range_start} and {@entrance_range_end}:
+        apply darkness 0 to {_p} for 2 seconds:
+            hide particles
+            hide icon
+        apply slowness 1 to {_p} for 1 seconds:
+            hide particles
+            hide icon
+
+    area_check_to_enter({_p})
+
+
+function on_join_handler(p: player):
+    reset title of {_p}
+    send title "&c&o= &r蟹鯖へようこそ！&c&o =" to {_p} for 2 seconds with fade in 1 second and fade out 1 second
+
+    play sound "entity.firework_rocket.launch" with volume 0.25 with pitch 2.00 to {_p}
+    play sound "entity.firework_rocket.launch" with volume 1.00 with pitch 1.00 to {_p}
+    play sound "entity.firework_rocket.launch" with volume 0.25 with pitch 0.00 to {_p}
+
+    area_reset_data_of_player({_p})
+
+
+function on_gamemode_change_handler(p: player):
+    if {_p}'s gamemode is adventure:
+        add {_p} to team named "visitor"
+        apply infinite dolphin's grace 0 to {_p}:
+            hide the particles
+            hide the icon
+
+    else if name of {_p} is "kanykaniekany" or ".kani_kani1566":
+        add {_p} to team named "kani"
+
+    else:
+        add {_p} to team named "admin"
+
+
+function on_right_click_handler(p: player, clicked_entity: entity):
+    att_player_clicked_teller({_p}, {_clicked_entity})
+
+
+every 1 second:
+    loop all players:
+        att_player_every_second(loop-player)

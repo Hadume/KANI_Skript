@@ -1,0 +1,16 @@
+#
+# /tp @s -651 94 346
+#
+
+on load:
+    set {_id} to "philomoss"
+    if {AREA::%{_id}%} is not set:
+        set {AREA::%{_id}%} to {_id}
+
+        set {AREA::%{_id}%::TITLE} to "Philomoss"
+        set {AREA::%{_id}%::SUBTITLE} to "フィロモス"
+
+        add "植物と人々が共存する住宅区。" to {AREA::%{_id}%::DESCRIPTION::*}
+        add "100人程度の人々が暮らしているらしい。" to {AREA::%{_id}%::DESCRIPTION::*}
+
+        add location(x: -651, y: 94, z: 346) and location(x: -642, y: 99, z: 349) to {AREA::%{_id}%::RANGE::1::*}

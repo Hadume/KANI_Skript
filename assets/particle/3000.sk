@@ -1,0 +1,7 @@
+on load:
+    if {objects::registered::*} do not contain 3000:
+        add 3000 to {objects::registered::*}
+
+every 2 ticks:
+    if {objects::enabled::*} contain 3000:
+        draw 1 end rod particle with velocity vector(5, 1.0, 2) with extra value of 0 at location(-599.5, 100.5, 176.5)

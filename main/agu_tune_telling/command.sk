@@ -1,0 +1,43 @@
+options:
+    function: "agu-tune_telling"
+
+
+on load:
+    if {COMMANDS::*} contains {@function}:
+        add {@function} to {COMMANDS::*}
+
+
+on command "/hdm agu-tune_telling":
+    set {_p} to player(arg-2)
+    if {_p} is alive:
+        if arg-3 is "_reset":
+            att_reset_player({_p})
+            debug_message(player, "%{_p}%の占い状態をリセットしました")
+        else if arg-3 is set:
+            att({_p}, arg-3)
+            debug_message(player, "%{_p}%に%arg-3%の占い結果を出します")
+        else:
+            att({_p})
+            debug_message(player, "%{_p}%にランダムな占い結果を出します")
+    else:
+        debug_message(player, "&cプレイヤーを指定してください")
+
+
+on command "/hdm cleanup agu-tune_telling":
+    att_cleanup()
+    debug_message(player, "占い機能のデータを消しました")
+
+
+on command "/hdm reset agu-tune_telling":
+    att_reset()
+    debug_message(player, "占い機能をリセットしました")
+
+
+on tab complete:
+    if event-string is not "/hdm" or "/skript:hdm":
+        stop
+    if tab arg-1 is not {@function}:
+        stop
+
+    set tab completions for position 2 to all players
+    set tab completions for position 3 to {att::RESULTS::*} and "_reset"

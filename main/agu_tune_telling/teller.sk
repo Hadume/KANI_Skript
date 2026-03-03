@@ -1,0 +1,52 @@
+options:
+    TELLER_POS: location(x: -603.5, y: 99.5, z: 364.5, world: "world") # tp用座標: /tp @s -603.5 99.5 364.5
+    TELLER_NAME: "[占い師]"
+
+
+function att_cleanup_teller():
+    execute console command "/npc remove teller"
+
+    loop all interactions:
+        if {entity::%uuid of loop-entity%::tags::*} does not contain "teller":
+            continue
+
+        delete {entity::%uuid of loop-entity%::*}
+        delete loop-entity
+
+
+function att_reset_teller():
+    att_cleanup_teller()
+
+    execute console command "/npc create teller --location %x of {@TELLER_POS}% %y of {@TELLER_POS}% %z of {@TELLER_POS}% --world %world of {@TELLER_POS}%"
+    att_stare_teller_at("crystal")
+    execute console command "/npc displayname teller @none"
+    execute console command "/npc turn_to_player_distance teller 8"
+    execute console command "/npc attribute teller set pose sitting"
+
+    spawn interaction at {@TELLER_POS}: # NPCでは、クリックしたプレイヤーを取得できないため、interactionで判定を代用
+        set interaction height of entity to 1.201
+        set interaction width of entity to 0.601
+        add "teller" to {entity::%uuid of entity%::tags::*}
+
+
+function att_stare_teller_at(thing: string):
+    if {_thing} is "player":
+        execute console command "/npc turn_to_player teller true"
+        exit
+    if {_thing} is "crystal":
+        execute console command "/npc rotate teller 0 11.25"
+        execute console command "/npc turn_to_player teller false"
+
+
+function att_message_teller(message: string, volume: number = 0.75, pitch: number = 1.0):
+    loop all players:
+        if distance between loop-player and {@TELLER_POS} is bigger than 8:
+            continue
+
+        message "%nl%%{@TELLER_NAME}% %{_message}%" to loop-player
+    play sound "entity.villager.ambient" with volume {_volume} with pitch {_pitch} on {@TELLER_POS}
+
+
+function att_message_teller_cooldown(p: player):
+    message "%nl%%{@TELLER_NAME}% %{_p}%、まだ助言は必要ないじゃろう。" to {_p}
+    play sound "entity.villager.no" with volume 0.75 with pitch 1.0 to {_p}

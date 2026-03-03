@@ -1,0 +1,87 @@
+options:
+    count: {att::core::sound::loop}
+    modded_count: mod({att::core::sound::loop}, 4)
+    divided_count: floor({att::core::sound::loop} / 4)
+
+
+function att_cleanup_sound():
+    cancel task with id {att::core::sound::task}
+
+
+function att_sound():
+    if {@divided_count} is 0:
+        if {@modded_count} is 0:
+            melody("A3")
+        else if {@modded_count} is 1:
+            melody("C4")
+        else if {@modded_count} is 2:
+            melody("E4")
+        else if {@modded_count} is 3:
+            melody("G4")
+    else if {@divided_count} is 1:
+        if {@modded_count} is 0:
+            melody("C4")
+        else if {@modded_count} is 1:
+            melody("E4")
+        else if {@modded_count} is 2:
+            melody("G4")
+        else if {@modded_count} is 3:
+            melody("B4")
+    else if {@divided_count} is 2:
+        if {@modded_count} is 0:
+            melody("E4")
+        else if {@modded_count} is 1:
+            melody("G4")
+        else if {@modded_count} is 2:
+            melody("B4")
+        else if {@modded_count} is 3:
+            melody("D5")
+    else if {@divided_count} is 3:
+        if {@modded_count} is 0:
+            melody("G4")
+        else if {@modded_count} is 1:
+            melody("B4")
+        else if {@modded_count} is 2:
+            melody("D5")
+        else if {@modded_count} is 3:
+            melody("F5")
+            att_sound_crystal("entity.generic.explode", 0.75, 1.75)
+            att_sound_crystal("entity.generic.explode", 0.50, 1.00)
+            att_sound_crystal("entity.generic.explode", 0.25, 0.50)
+            cancel task with id {att::core::crystal::task}
+            att_cleanup_sound()
+
+    add 1 to {@count}
+
+
+local function melody(scale: string):
+    if {_scale} is "G3":
+        set {_pitch} to -11
+    else if {_scale} is "A3":
+        set {_pitch} to -9
+    else if {_scale} is "B3":
+        set {_pitch} to -7
+    else if {_scale} is "C4":
+        set {_pitch} to -6
+    else if {_scale} is "D4":
+        set {_pitch} to -4
+    else if {_scale} is "E4":
+        set {_pitch} to -2
+    else if {_scale} is "F4":
+        set {_pitch} to -1
+    else if {_scale} is "G4":
+        set {_pitch} to 1
+    else if {_scale} is "A4":
+        set {_pitch} to 3
+    else if {_scale} is "B4":
+        set {_pitch} to 5
+    else if {_scale} is "C5":
+        set {_pitch} to 6
+    else if {_scale} is "D5":
+        set {_pitch} to 8
+    else if {_scale} is "E5":
+        set {_pitch} to 10
+    else if {_scale} is "F5":
+        set {_pitch} to 11
+    if {_pitch} is set:
+        att_sound_crystal("block.note_block.bell", 1.0, 2 ^ ({_pitch} / 12))

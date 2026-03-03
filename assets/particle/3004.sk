@@ -1,0 +1,7 @@
+on load:
+    if {objects::registered::*} do not contain 3004:
+        add 3004 to {objects::registered::*}
+
+every 2 ticks:
+    if {objects::enabled::*} contain 3004:
+        draw 1 glow particle with velocity vector(5, 1, 2) with extra value of 0.0001 at location(-656.5, 96.5, 356.5)

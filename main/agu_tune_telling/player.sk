@@ -7,11 +7,11 @@ options:
 
 function att_player_clicked_teller(p: player, clicked_entity: entity):
     if {entity::%uuid of {_clicked_entity}%::tags::*} does not contain "teller":
-        stop
+        exit
 
     if {player::%uuid of {_p}%::att::timer} is set:
         att_message_teller_cooldown({_p})
-        stop
+        exit
 
     if {att::core::task} is not set:
         att({_p})

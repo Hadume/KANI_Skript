@@ -11,18 +11,18 @@ command /hdm <string> [<string>] [<string>] [<string>]:
             arg-1 is "reset"
             arg-1 is "cleanup"
         then:
-            stop
+            exit
 
         debug_message(player, "&cそんなコマンドは無いヨ！")
 
 
 on tab complete:
     if event-string is not "/hdm" or "/skript:hdm":
-        stop
+        exit
 
     set tab completions for position 1 to {COMMANDS::*}, "reset" and "cleanup"
 
     if tab arg-1 is not "reset" or "cleanup":
-        stop
+        exit
 
     set tab completions for position 2 to {COMMANDS::*}

@@ -35,9 +35,9 @@ on command "/hdm reset agu-tune_telling":
 
 on tab complete:
     if event-string is not "/hdm" or "/skript:hdm":
-        stop
+        exit
     if tab arg-1 is not {@function}:
-        stop
+        exit
 
     set tab completions for position 2 to all players
     set tab completions for position 3 to {att::RESULTS::*} and "_reset"

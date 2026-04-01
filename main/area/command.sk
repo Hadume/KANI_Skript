@@ -4,7 +4,7 @@ options:
 
 on load:
     if {COMMANDS::*} contains {@function}:
-        stop
+        exit
 
     add {@function} to {COMMANDS::*}
 
@@ -48,7 +48,7 @@ on tab complete:
         event-string is not "/hdm" or "/skript:hdm"
         tab arg-1 is not {@function}
     then:
-        stop
+        exit
 
     set tab completions for position 2 to all players
     set tab completions for position 3 to "enter" and "leave"

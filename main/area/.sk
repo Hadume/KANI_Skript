@@ -6,13 +6,16 @@ function area_check_to_enter(p: player):
     set {_area} to "" # 使いやすい拡張機能が変数の定義不足でエラーを吐くので、"しかたなく" ここで定義してます
     for {_area} in {AREA::*}:
         if {{@player_data}::entered_area::*} contains {_area}:
-            stop
+            exit
 
-        set {_index} to 1
+        set {_index} to 0
         while {@range_start} is set:
-            if {_p} is within {@range_start} and {@range_end}:
-                area_enter({_p}, {_area})
             add 1 to {_index}
+            if {_p} is not within {@range_start} and {@range_end}:
+                exit
+
+            area_enter({_p}, {_area})
+
 
 
 function area_enter(p: player, area: string):

@@ -2,14 +2,14 @@ options:
     function: "particle"
 
 
-function enable_particle(p: player, particle_id: string):
+function enable_particle(p: player, particle_id: number):
     add {_particle_id} to {objects::enabled::*}
     debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを表示します")
 
 
-function disable_particle(p: player, particle_id: string):
+function disable_particle(p: player, particle_id: number):
     remove {_particle_id} from {objects::enabled::*}
-    debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを表示します")
+    debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを非表示にします")
 
 
 on load:
@@ -18,22 +18,23 @@ on load:
 
 
 on command "/hdm particle":
-    if {objects::REGISTERED::*} contains arg-2:
+    set {_parsed_arg} to arg-2 parsed as number
+    if {objects::registered::*} contains {_parsed_arg}:
         if arg-3 is "enable":
-            if {objects::enabled::*} contains arg-2:
+            if {objects::enabled::*} contains {_parsed_arg}:
                 debug_message(player, "&cそのパーティクルは表示されてるよ！")
             else:
-                enable_particle(player, arg-2)
+                enable_particle(player, {_parsed_arg})
         else if arg-3 is "disable":
-            if {objects::enabled::*} contains arg-2:
-                disable_particle(player, arg-2)
+            if {objects::enabled::*} contains {_parsed_arg}:
+                disable_particle(player, {_parsed_arg})
             else:
                 debug_message(player, "&cそのパーティクルは表示されてないよ！")
         else:
-            if {objects::enabled::*} contains arg-2:
-                disable_particle(player, arg-2)
+            if {objects::enabled::*} contains {_parsed_arg}:
+                disable_particle(player, {_parsed_arg})
             else:
-                enable_particle(player, arg-2)
+                enable_particle(player, {_parsed_arg})
     else:
         debug_message(player, "&cそのパーティクルは登録されていません")
 

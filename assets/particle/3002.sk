@@ -4,4 +4,4 @@ on load:
 
 every ticks:
     if {objects::enabled::*} contain 3002:
-        draw 1 end rod particle with velocity vector(2, 2, 4) with extra value of 0 at location(-647.5, 100, 189.5)
+        draw 1 end rod particle with offset vector(2, 2, 4) with extra value of 0 at location(-647.5, 100, 189.5)

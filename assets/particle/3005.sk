@@ -4,4 +4,4 @@ on load:
 
 every ticks:
     if {objects::enabled::*} contain 3005:
-        force draw 1 firework particle with velocity vector(5, 5, 4) with extra value of 0.01 at location(-494.5, 80.5, 200.5)
+        force draw 1 firework particle with offset vector(5, 5, 4) with extra value of 0.01 at location(-494.5, 80.5, 200.5)

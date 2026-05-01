@@ -1,0 +1,30 @@
+on dismount:
+    if {player::%uuid of player%::gondola_boarding} is not true:
+        stop
+
+    if all:
+        {player::%uuid of player%::gondola_moving} is false
+        {gondola::mounting} is not true
+    then:
+        delete {player::%uuid of player%::gondola_boarding}
+        delete {player::%uuid of player%::gondola_moving}
+
+        wait 1 tick
+        teleport player to {gondola::%{entity::%uuid of vehicle of vehicle of vehicle of player%::id}%::destination::%{entity::%uuid of vehicle of vehicle of vehicle of player%::destination_index}%::exit_loc}
+        play sound "item.armor.equip_leather" with volume 0.75 with pitch 1.0 to player
+
+    else:
+        cancel event
+
+
+on mount:
+    if entity is not player:
+        stop
+
+    if {player::%uuid of entity%::gondola_boarding} is true:
+        stop
+
+    if {entity::%uuid of vehicle of entity%::tags::*} does not contain "gondola_body":
+        stop
+
+    cancel event

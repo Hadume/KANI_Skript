@@ -1,0 +1,18 @@
+options:
+    function: "gondola"
+
+
+on load:
+    if {COMMANDS::*} does not contain {@function}:
+        add {@function} to {COMMANDS::*}
+
+
+on command "/hdm cleanup gondola":
+    gondola_cleanup_body()
+    delete {gondola::*}
+    debug_message(player, "ゴンドラ機能のデータを消しました")
+
+
+on command "/hdm reset gondola":
+    gondola_reset_body()
+    debug_message(player, "ゴンドラ機能をリセットしました")

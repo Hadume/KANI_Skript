@@ -1,0 +1,29 @@
+options:
+    point_1: location(x:-491.5, y:137.5, z:497.5, world:"world")
+    point_2: location(x:-501.5, y:135.0, z:512.5, world:"world")
+    point_3: location(x:-514.5, y:137.0, z:531.5, world:"world")
+    point_4: location(x:-520.5, y:135.0, z:546.5, world:"world")
+    point_5: location(x:-523.5, y:136.0, z:553.5, world:"world")
+
+on load:
+    set {_id} to 4
+    if {gondola::%{_id}%} is not set:
+        set {gondola::%{_id}%} to {_id}
+
+        set {gondola::%{_id}%::destination::1::speed} to 0.2
+        set {gondola::%{_id}%::destination::1::gate_loc} to location(x:-483.5, y:122.0, z:490.5, world:"world")
+        set {gondola::%{_id}%::destination::1::exit_loc} to location(x:-484.0, y:122.0, z:491.5, world:"world", yaw:22.5, pitch:0.0)
+        add {@point_1} to {gondola::%{_id}%::destination::1::relay_loc::*}
+        add {@point_2} to {gondola::%{_id}%::destination::1::relay_loc::*}
+        add {@point_3} to {gondola::%{_id}%::destination::1::relay_loc::*}
+        add {@point_4} to {gondola::%{_id}%::destination::1::relay_loc::*}
+        add {@point_5} to {gondola::%{_id}%::destination::1::relay_loc::*}
+
+        set {gondola::%{_id}%::destination::2::speed} to 0.2
+        set {gondola::%{_id}%::destination::2::gate_loc} to location(x:-525.0, y:141.0, z:561.5, world:"world")
+        set {gondola::%{_id}%::destination::2::exit_loc} to location(x:-526.5, y:141.0, z:562.5, world:"world", yaw:45.0, pitch:0.0)
+        add {@point_5} to {gondola::%{_id}%::destination::2::relay_loc::*}
+        add {@point_4} to {gondola::%{_id}%::destination::2::relay_loc::*}
+        add {@point_3} to {gondola::%{_id}%::destination::2::relay_loc::*}
+        add {@point_2} to {gondola::%{_id}%::destination::2::relay_loc::*}
+        add {@point_1} to {gondola::%{_id}%::destination::2::relay_loc::*}

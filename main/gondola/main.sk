@@ -1,0 +1,211 @@
+options:
+    boarding_seconds: 10
+
+options:
+    loop_entity: entity::%uuid of loop-entity%
+
+
+local function gondola_toggle_moving_body(e: entity):
+    if {entity::%uuid of {_e}%::moving} is false:
+        set {entity::%uuid of {_e}%::moving} to true
+
+    else:
+        set {entity::%uuid of {_e}%::moving} to false
+
+
+local function gondola_check_all_stopping_station_body() :: boolean:
+    loop all husks:
+        if {{@loop_entity}::tags::*} does not contain "gondola_body":
+            continue
+
+        if {{@loop_entity}::moving} is true:
+            return false
+
+    return true
+
+
+function gondola_cleanup_body():
+    cancel task with id {gondola::start_moving::task}
+    delete {gondola::start_moving::*}
+    loop all husks and all interactions and all camels:
+        if {{@loop_entity}::tags::*} does not contain "gondola_body":
+            continue
+
+        delete {{@loop_entity}::*}
+        delete loop-entity
+
+
+function gondola_reset_body():
+    gondola_cleanup_body()
+
+    set {_id} to 0
+    for {_id} in {gondola::*}:
+        spawn husk at {gondola::%{_id}%::destination::1::relay_loc::1}:
+            add "gondola_body" to {entity::%uuid of entity%::tags::*}
+            set {entity::%uuid of entity%::destination_index} to 1
+            set {entity::%uuid of entity%::id} to {_id}
+            set {entity::%uuid of entity%::gate_rotation} to 0
+            set scale attribute of entity  to 8.0
+            set off hand of entity to air
+            set main hand of entity to air
+            set chestplate of entity to air
+            set legs of entity to air
+            set feet of entity to air
+            set ai of entity to false
+            make entity invulnerable
+            make entity invisible
+            make entity adult
+            make entity silent
+            prevent entity from despawning when far away
+            set {_parent} to entity
+            modify nbt of entity:
+                set compound tag "equipment;head" of nbt to nbt from "{id: iron_ingot, count: 1,components:{item_name:gondora}}"
+                set string tag "equipment;head;components;item_model" of nbt to "kani:structure/gondora"
+            gondola_toggle_moving_body(entity)
+
+        spawn interaction at {gondola::%{_id}%::destination::1::relay_loc::1}:
+            add "gondola_body" to {entity::%uuid of entity%::tags::*}
+            set {entity::%uuid of entity%::id} to {_id}
+            set interaction width of entity to 0.01
+            set vehicle of entity to {_parent}
+            set {_parent2} to entity
+        console command "data modify entity %uuid of {_parent2}% height set value -21.25f"
+
+        spawn camel at {gondola::%{_id}%::destination::1::relay_loc::1}:
+            add "gondola_body" to {entity::%uuid of entity%::tags::*}
+            set {entity::%uuid of entity%::id} to {_id}
+            set scale attribute of entity  to 3.0
+            set vehicle of entity to {_parent2}
+            set ai of entity to false
+            make entity invulnerable
+            force entity to persist
+            make entity invisible
+            make entity silent
+            make entity adult
+
+        set {_velocity} to normalized vector from {_parent} to {gondola::%{_id}%::destination::1::relay_loc::2}
+        teleport {_parent} to location(x: x of location of {_parent}, y: y of location of {_parent}, z: z of location of {_parent}, yaw: yaw of {_velocity}, pitch: 0.0)
+
+    gondola_start_moving_body()
+
+
+function gondola_start_moving_body():
+    set {gondola::start_moving::timer} to {@boarding_seconds}
+    run 0 tick later repeating every 1 second and store id in {gondola::start_moving::task}:
+        if any:
+            {gondola::start_moving::timer} is {@boarding_seconds}
+            {gondola::start_moving::timer} is ({@boarding_seconds} / 2)
+        then:
+            loop all players:
+                if {player::%uuid of loop-player%::gondola_boarding} is true:
+                    message("<lang:kani.gondola>", "<bold>%{gondola::start_moving::timer}%<reset><aqua><lang:kani.gondola.countdown>", loop-player)
+        remove 1 from {gondola::start_moving::timer}
+
+        if {gondola::start_moving::timer} is smaller than 1:
+            cancel task with id {gondola::start_moving::task}
+            loop all husks:
+                if {{@loop_entity}::tags::*} contains "gondola_body":
+                    set {_p} to true
+                    for {_p} in passengers of passenger of passenger of loop-entity:
+                        set {player::%uuid of {_p}%::gondola_moving} to true
+
+                    play sound "block.bell.use" with volume 1.5 with pitch 1.0 on location of loop-entity
+
+                    set {{@loop_entity}::relay_index} to 1
+                    gondola_toggle_moving_body(loop-entity)
+
+
+every 1 tick:
+    loop all husks:
+        if {{@loop_entity}::tags::*} does not contain "gondola_body":
+            continue
+
+        if {{@loop_entity}::moving} is true:
+            if random integer from 1 to 20 is 1:
+                play sound "entity.minecart.riding" with volume 0.125 with pitch 1.0 on location of loop-entity
+
+            set {_destination_loc} to {gondola::%{{@loop_entity}::id}%::destination::%{{@loop_entity}::destination_index}%::relay_loc::%{{@loop_entity}::relay_index} + 1%}
+
+            set {_velocity} to normalized vector from loop-entity to {_destination_loc}
+            set {_velocity} to {_velocity} * {gondola::%{{@loop_entity}::id}%::destination::%{{@loop_entity}::destination_index}%::speed}
+
+            set {_rand_x} to random number from -0.01 to 0.01
+            set {_rand_y} to random number from -0.01 to 0.01
+            set {_rand_z} to random number from -0.01 to 0.01
+            teleport loop-entity to location(x: {_rand_x} + x of location of loop-entity + x of {_velocity}, y: {_rand_y} + y of location of loop-entity + y of {_velocity}, z: {_rand_z} + z of location of loop-entity + z of {_velocity}, yaw: yaw of {_velocity}, pitch: 0.0)
+            if distance between loop-entity and {gondola::%{{@loop_entity}::id}%::destination::%{{@loop_entity}::destination_index}%::relay_loc::%{{@loop_entity}::relay_index} + 1%} is smaller than 1.0:
+                add 1 to {{@loop_entity}::relay_index}
+                if {{@loop_entity}::relay_index} + 1 is bigger than size of {gondola::%{{@loop_entity}::id}%::destination::%{{@loop_entity}::destination_index}%::relay_loc::*}:
+                    set {{@loop_entity}::destination_index} to {{@loop_entity}::destination_index} + 1
+                    if {{@loop_entity}::destination_index} is bigger than 2:
+                        set {{@loop_entity}::destination_index} to 1
+                    set {{@loop_entity}::relay_index} to 1
+                    gondola_toggle_moving_body(loop-entity)
+                    play sound "block.note_block.bell" with volume 1.5 with pitch 0.75 on location of loop-entity
+
+                    delete {player::%uuid of passenger of passenger of passenger of loop-entity%::gondola_boarding}
+                    delete {player::%uuid of passenger of passenger of passenger of loop-entity%::gondola_moving}
+
+                    play sound "item.armor.equip_leather" with volume 0.75 with pitch 1.0 to passenger of passenger of passenger of loop-entity
+                    message "<<aqua><lang:kani.gondola><reset>> <aqua><lang:kani.gondola.arrival>" to passenger of passenger of passenger of loop-entity
+                    teleport passenger of passenger of passenger of loop-entity to {gondola::%{entity::%uuid of loop-entity%::id}%::destination::%{entity::%uuid of loop-entity%::destination_index}%::exit_loc}
+
+                    if (gondola_check_all_stopping_station_body() is true):
+                        gondola_start_moving_body()
+
+                    stop
+
+        else:
+            loop all camels:
+                if {entity::%uuid of loop-entity-2%::tags::*} does not contain "gondola_body":
+                    continue
+
+                if {entity::%uuid of loop-entity-2%::id} is not {entity::%uuid of loop-entity-1%::id}:
+                    continue
+
+                set {_vehicle} to loop-entity-2
+
+            loop all players:
+                if distance between loop-player and {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} is smaller than 1.0:
+                    set {player::%uuid of loop-player%::gondola_boarding} to true
+                    set {player::%uuid of loop-player%::gondola_moving} to false
+                    set {gondola::mounting} to true
+                    set vehicle of loop-player to {_vehicle}
+                    delete {gondola::mounting}
+                    play sound "item.armor.equip_gold" with volume 0.75 with pitch 1.0 to loop-player
+                    if {gondola::start_moving::timer} is bigger than 0:
+                        message("<lang:kani.gondola>", "<bold>%{gondola::start_moving::timer}%<reset><aqua><lang:kani.gondola.countdown>", loop-player)
+                    else:
+                        message("<lang:kani.gondola>", "<lang:kani.gondola.wait>", loop-player)
+
+            set {{@loop_entity}::gate_rotation} to {{@loop_entity}::gate_rotation} + 15
+            set {{@loop_entity}::gate_rotation} to mod(d: {{@loop_entity}::gate_rotation}, m: 360)
+            set {_v} to (vector from yaw {{@loop_entity}::gate_rotation} and pitch 0.0) * 0.5
+
+            draw 2 end rod particles with offset vector(0.0, 0.5, 0.0) with extra value of 0 at location(x: x of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + x of {_v}, y: y of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + 0.5, z: z of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + z of {_v})
+
+
+
+
+on husk or camel move:
+    if {entity::%uuid of entity%::tags::*} does not contain "gondola_body":
+        stop
+
+    if {entity::%uuid of entity%::moving} is true:
+        stop
+
+    cancel event
+
+on husk or camel turn around:
+    if {entity::%uuid of entity%::tags::*} does not contain "gondola_body":
+        stop
+
+    cancel event
+
+on damage of player by husk or camel:
+    if {entity::%uuid of attacker%::tags::*} contains "gondola_body":
+        cancel event
+
+on damage of husk or camel:
+    if {entity::%uuid of victim%::tags::*} contains "gondola_body":
+        cancel event

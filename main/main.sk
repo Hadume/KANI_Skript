@@ -1,3 +1,7 @@
+function message(from: string, msg: string, to: entity):
+    message formatted "%nl%<white><<aqua>%{_from}%<white>> <aqua>%{_msg}%" to {_to}
+
+
 on load:
     # SkriptとSkbeeだけだとプレイヤーのネームタグの色を変更できないので、teamを作成してます
     if team "visitor" is not registered:
@@ -12,10 +16,6 @@ on load:
 
 on player move:
     on_move_handler(player)
-
-
-on join:
-    on_join_handler(player)
 
 
 on gamemode change:

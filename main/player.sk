@@ -12,19 +12,6 @@ function on_move_handler(p: player):
             hide particles
             hide icon
 
-    area_check_to_enter({_p})
-
-
-function on_join_handler(p: player):
-    reset title of {_p}
-    send title "&c&o= &r蟹鯖へようこそ！&c&o =" to {_p} for 2 seconds with fade in 1 second and fade out 1 second
-
-    play sound "entity.firework_rocket.launch" with volume 0.25 with pitch 2.00 to {_p}
-    play sound "entity.firework_rocket.launch" with volume 1.00 with pitch 1.00 to {_p}
-    play sound "entity.firework_rocket.launch" with volume 0.25 with pitch 0.00 to {_p}
-
-    area_reset_data_of_player({_p})
-
 
 function on_gamemode_change_handler(p: player):
     if {_p}'s gamemode is adventure:

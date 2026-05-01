@@ -1,6 +1,6 @@
 options:
-    TELLER_POS: location(x: -603.5, y: 99.5, z: 364.5, world: "world") # tp用座標: /tp @s -603.5 99.5 364.5
-    TELLER_NAME: "[占い師]"
+    TELLER_POS: location(x: -603.5, y: 100.5, z: 364.5, world: "world") # tp用座標: /tp @s -603.5 99.5 364.5
+    TELLER_NAME: "[<lang:kani.npc.fortune_telling>]"
 
 
 function att_cleanup_teller():
@@ -22,6 +22,7 @@ function att_reset_teller():
     execute console command "/npc displayname teller @none"
     execute console command "/npc turn_to_player_distance teller 8"
     execute console command "/npc attribute teller set pose sitting"
+    execute console command "/npc skin teller 05.agu.png"
 
     spawn interaction at {@TELLER_POS}: # NPCでは、クリックしたプレイヤーを取得できないため、interactionで判定を代用
         set interaction height of entity to 1.201
@@ -43,10 +44,10 @@ function att_message_teller(message: string, volume: number = 0.75, pitch: numbe
         if distance between loop-player and {@TELLER_POS} is bigger than 8:
             continue
 
-        message "%nl%%{@TELLER_NAME}% %{_message}%" to loop-player
+        message formatted "%nl%%{@TELLER_NAME}% %{_message}%" to loop-player
     play sound "entity.villager.ambient" with volume {_volume} with pitch {_pitch} on {@TELLER_POS}
 
 
 function att_message_teller_cooldown(p: player):
-    message "%nl%%{@TELLER_NAME}% %{_p}%、まだ助言は必要ないじゃろう。" to {_p}
+    message formatted "%nl%%{@TELLER_NAME}% <lang:kani.npc.fortune_telling.dialogue.fail>" to {_p}
     play sound "entity.villager.no" with volume 0.75 with pitch 1.0 to {_p}

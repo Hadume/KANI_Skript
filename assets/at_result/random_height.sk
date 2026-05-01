@@ -6,7 +6,7 @@ on load:
 
 
 function att_assets_random_height(p: player):
-    att_message_teller("いつもは見れない景色が見れそうじゃ！")
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.2>")
 
     set {_rand} to random integer from 1 to size of {att::RESULTS::{@id}::*}
     set scale attribute of {_p} to {att::RESULTS::{@id}::%{_rand}%}

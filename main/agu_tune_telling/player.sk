@@ -23,7 +23,7 @@ function att_player_every_second(p: player):
 
     remove 1 from {player::%uuid of {_p}%::att::timer}
     if {player::%uuid of {_p}%::att::timer} is smaller than 1:
-        message "%nl%[%{_p}%] <red>占いの効果が切れたようだ" to {_p}
+        message formatted "%nl%[%{_p}%] <red><lang:kani.npc.fortune_telling.dialogue.off>" to {_p}
         play sound "block.beacon.deactivate" with volume 0.75 with pitch 1.25 to {_p}
         att_reset_player({_p})
 

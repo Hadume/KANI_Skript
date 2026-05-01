@@ -3,7 +3,7 @@ options:
 
 
 on load:
-    if {COMMANDS::*} contains {@function}:
+    if {COMMANDS::*} does not contain {@function}:
         add {@function} to {COMMANDS::*}
 
 
@@ -30,6 +30,7 @@ on command "/hdm cleanup agu-tune_telling":
 
 on command "/hdm reset agu-tune_telling":
     att_reset()
+    att_reset_teller()
     debug_message(player, "占い機能をリセットしました")
 
 

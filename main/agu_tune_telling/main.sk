@@ -1,11 +1,6 @@
 using script reflection
 
 
-on load:
-    att_reset()
-    att_reset_teller()
-
-
 function att_reset():
     att_cleanup_sound()
     att_reset_crystal()
@@ -37,13 +32,13 @@ function att(told_player: player, result: string = "null"):
 
     run 0 ticks later repeating every 2 seconds and store id in {att::core::task}:
         if {att::core::loop} is 1:
-            att_message_teller("%{_told_player}%、おぬし！", volume: 1.0, pitch: 1.125)
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.1>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 2:
-            att_message_teller("よくない運気の流れがきておるぞ！")
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.2>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 3:
-            att_message_teller("わしが占ってやる！")
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.3>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 4:
-            att_message_teller("はぁーーー")
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.4>", volume: 1.0, pitch: 1.125)
             att_stare_teller_at("crystal")
             att_sound_crystal("block.portal.trigger", volume: 0.5, pitch: 1.25)
             set {att::core::sound::loop} to 0
@@ -55,14 +50,10 @@ function att(told_player: player, result: string = "null"):
             att_stare_teller_at("player")
             att_give_player_blessing({_told_player}, {_result})
         else if {att::core::loop} is 8:
-            att_message_teller("悩みができたら")
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.5>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 9:
-            att_message_teller("また来なさい")
+            att_message_teller("<lang:kani.npc.fortune_telling.dialogue.6>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 10:
             att_reset()
 
         add 1 to {att::core::loop}
-
-
-every 2 ticks:
-    draw 1 ominous trial spawner detection particle with offset vector(2.0, 2.0, 2.0) with extra value of 0 at location(-603.5, 101.0, 365.5)

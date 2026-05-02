@@ -24,3 +24,7 @@ on gamemode change:
 
 on right click:
     on_right_click_handler(player, clicked entity)
+
+
+on quit:
+    on_quit_handler(player)

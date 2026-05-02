@@ -14,22 +14,25 @@ function on_move_handler(p: player):
 
 
 function on_gamemode_change_handler(p: player):
-    if {_p}'s gamemode is adventure:
+    if team of {_p} is not team named "admin":
         add {_p} to team named "visitor"
         apply infinite dolphin's grace 0 to {_p}:
             hide the particles
             hide the icon
 
-    else if name of {_p} is "kanykaniekany" or ".kani_kani1566":
-        add {_p} to team named "kani"
+    # else if name of {_p} is "kanykaniekany" or ".kani_kani1566":
+    #     add {_p} to team named "kani"
 
-    else:
-        add {_p} to team named "admin"
+    # else:
+    #     add {_p} to team named "admin"
 
 
 function on_right_click_handler(p: player, clicked_entity: entity):
     att_player_clicked_teller({_p}, {_clicked_entity})
 
+
+function on_quit_handler(p: player):
+    gondola_force_dismount({_p})
 
 every 1 second:
     loop all players:

@@ -143,17 +143,23 @@ every 1 tick:
                     gondola_toggle_moving_body(loop-entity)
                     play sound "block.note_block.bell" with volume 1.5 with pitch 0.75 on location of loop-entity
 
-                    delete {player::%uuid of passenger of passenger of passenger of loop-entity%::gondola_boarding}
-                    delete {player::%uuid of passenger of passenger of passenger of loop-entity%::gondola_moving}
+                    loop passenger of passenger of passenger of loop-entity:
+                        if {player::%uuid of loop-entity-2%::gondola_boarding} is true:
+                            delete {player::%uuid of loop-entity-2%::gondola_boarding}
+                            delete {player::%uuid of loop-entity-2%::gondola_moving}
+                            # make loop-entity-2 visible
 
                     play sound "item.armor.equip_leather" with volume 0.75 with pitch 1.0 to passenger of passenger of passenger of loop-entity
-                    message "<<aqua><lang:kani.gondola><reset>> <aqua><lang:kani.gondola.arrival>" to passenger of passenger of passenger of loop-entity
-                    teleport passenger of passenger of passenger of loop-entity to {gondola::%{entity::%uuid of loop-entity%::id}%::destination::%{entity::%uuid of loop-entity%::destination_index}%::exit_loc}
-
+                    message formatted "<<aqua><lang:kani.gondola><reset>> <aqua><lang:kani.gondola.arrival>" to passenger of passenger of passenger of loop-entity
                     if (gondola_check_all_stopping_station_body() is true):
                         gondola_start_moving_body()
 
-                    stop
+                    wait 1 tick
+                    set {gondola::mounting} to true
+                    teleport passenger of passenger of passenger of loop-entity to {gondola::%{entity::%uuid of loop-entity%::id}%::destination::%{entity::%uuid of loop-entity%::destination_index}%::exit_loc}
+                    delete {gondola::mounting}
+
+
 
         else:
             loop all camels:
@@ -169,6 +175,7 @@ every 1 tick:
                 if distance between loop-player and {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} is smaller than 1.0:
                     set {player::%uuid of loop-player%::gondola_boarding} to true
                     set {player::%uuid of loop-player%::gondola_moving} to false
+                    # make loop-player invisible
                     set {gondola::mounting} to true
                     set vehicle of loop-player to {_vehicle}
                     delete {gondola::mounting}
@@ -183,7 +190,6 @@ every 1 tick:
             set {_v} to (vector from yaw {{@loop_entity}::gate_rotation} and pitch 0.0) * 0.5
 
             draw 2 end rod particles with offset vector(0.0, 0.5, 0.0) with extra value of 0 at location(x: x of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + x of {_v}, y: y of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + 0.5, z: z of {gondola::%{entity::%uuid of loop-entity-1%::id}%::destination::%{entity::%uuid of loop-entity-1%::destination_index}%::gate_loc} + z of {_v})
-
 
 
 

@@ -8,6 +8,7 @@ on dismount:
     then:
         delete {player::%uuid of player%::gondola_boarding}
         delete {player::%uuid of player%::gondola_moving}
+        # make player visible
 
         wait 1 tick
         teleport player to {gondola::%{entity::%uuid of vehicle of vehicle of vehicle of player%::id}%::destination::%{entity::%uuid of vehicle of vehicle of vehicle of player%::destination_index}%::exit_loc}
@@ -28,3 +29,7 @@ on mount:
         stop
 
     cancel event
+
+
+function gondola_force_dismount(p: player):
+    make {_p} dismount

@@ -23,6 +23,7 @@ function att_reset_teller():
     execute console command "/npc turn_to_player_distance teller 8"
     execute console command "/npc attribute teller set pose sitting"
     execute console command "/npc skin teller 05.agu.png"
+    execute console command "/npc displayname teller &6< ! >"
 
     spawn interaction at {@TELLER_POS}: # NPCでは、クリックしたプレイヤーを取得できないため、interactionで判定を代用
         set interaction height of entity to 1.201

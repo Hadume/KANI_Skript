@@ -31,7 +31,6 @@ function att_player_every_second(p: player):
 function att_reset_player(p: player):
     run function "att_assets_reset_%{player::%uuid of {_p}%::att::result}%" with arguments {_p}
     delete {player::%uuid of {_p}%::att::*}
-    remove potion effect of luck from {_p}
 
 
 function att_give_player_blessing(p: player, result: string):
@@ -46,5 +45,3 @@ function att_give_player_blessing(p: player, result: string):
         set {_loc} to location of loop-entity
         add 1.62 to y of {_loc}
         draw 10 explosion particles with offset vector(0.75, 0.75, 0.75) with extra value of 1.0 at {_loc}
-    apply luck 0 to {_p} for {@EFFECT_SECONDS} seconds:
-        hide the particles

@@ -1,0 +1,19 @@
+on load:
+    if {att::RESULTS::*} does not contain "{@id}":
+        add "{@id}" to {att::RESULTS::*}
+
+
+function att_assets_kani_tume(p: player):
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.3>")
+
+    execute console command "skin set kanykaniekany %{_p}%"
+
+
+
+function att_assets_reset_kani_tume(p: player):
+    execute console command "skin clear %{_p}%"
+
+
+
+options:
+    id: kani_tume # このidがfunctionで呼び出されるので、functionで使われているものと同じものをidとして登録してください

@@ -1,0 +1,28 @@
+on load:
+    if {att::RESULTS::*} does not contain "{@id}":
+        add "{@id}" to {att::RESULTS::*}
+
+    if team "att_1" is not registered:
+        execute console command "team add att_1"
+        set team option collision rule of team named "att_1" to for other teams
+        set team prefix of team named "att_1" to formatted "<light_purple><bold>神も嫉妬する人類。"
+
+    if team "att_2" is not registered:
+        execute console command "team add att_2"
+        set team option collision rule of team named "att_2" to for other teams
+        set team prefix of team named "att_2" to formatted "<light_purple><bold>まだ3％しか力出してない。"
+
+function att_assets_gorgeous_aka(p: player):
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.3>")
+
+    apply luck 0 to {_p} for 60 seconds
+
+
+
+function att_assets_reset_gorgeous_aka(p: player):
+    remove potion effect of luck from {_p}
+
+
+
+options:
+    id: gorgeous_aka # このidがfunctionで呼び出されるので、functionで使われているものと同じものをidとして登録してください。

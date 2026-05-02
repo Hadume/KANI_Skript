@@ -6,7 +6,7 @@ on load:
 
 
 function att_assets_random_gravity(p: player):
-    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.random_gravity>")
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.1>")
 
     set {_rand} to random integer from 1 to size of {att::RESULTS::{@id}::*}
     set gravity attribute of {_p} to {att::RESULTS::{@id}::%{_rand}%}

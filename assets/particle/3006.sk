@@ -1,7 +1,0 @@
-on load:
-    if {objects::registered::*} do not contain 3006:
-        add 3006 to {objects::registered::*}
-
-every ticks:
-    if {objects::enabled::*} contain 3006:
-        draw 1 enchanting particle with offset vector(3, 1, 1.5) with extra value of 0.01 at location(-521.5, 94, 196.5)

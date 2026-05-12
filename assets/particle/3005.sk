@@ -1,7 +1,0 @@
-on load:
-    if {objects::registered::*} do not contain 3005:
-        add 3005 to {objects::registered::*}
-
-every ticks:
-    if {objects::enabled::*} contain 3005:
-        force draw 1 firework particle with offset vector(5, 5, 4) with extra value of 0.01 at location(-494.5, 80.5, 200.5)

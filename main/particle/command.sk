@@ -2,36 +2,39 @@ options:
     function: "particle"
 
 
-function enable_particle(p: player, particle_id: number):
-    add {_particle_id} to {objects::enabled::*}
+local function enable_particle(p: player, particle_id: number):
+    add {_particle_id} to {particles::enabled::*}
     debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを表示します")
 
 
-function disable_particle(p: player, particle_id: number):
-    remove {_particle_id} from {objects::enabled::*}
+local function disable_particle(p: player, particle_id: number):
+    remove {_particle_id} from {particles::enabled::*}
     debug_message({_p}, "&b%{_particle_id}%&fのパーティクルを非表示にします")
 
 
 on load:
-    if {COMMANDS::*} does not contain {@function}:
-        add {@function} to {COMMANDS::*}
+    if ({COMMANDS::*} contains {@function}):
+        stop
+
+    add {@function} to {COMMANDS::*}
 
 
 on command "/hdm particle":
     set {_parsed_arg} to arg-2 parsed as number
-    if {objects::registered::*} contains {_parsed_arg}:
+
+    if ({particles::REGISTERED::*} contains {_parsed_arg}):
         if arg-3 is "enable":
-            if {objects::enabled::*} contains {_parsed_arg}:
+            if ({particles::enabled::*} contains {_parsed_arg}):
                 debug_message(player, "&cそのパーティクルは表示されてるよ！")
             else:
                 enable_particle(player, {_parsed_arg})
-        else if arg-3 is "disable":
-            if {objects::enabled::*} contains {_parsed_arg}:
+        else if (arg-3 is "disable"):
+            if ({particles::enabled::*} contains {_parsed_arg}):
                 disable_particle(player, {_parsed_arg})
             else:
                 debug_message(player, "&cそのパーティクルは表示されてないよ！")
         else:
-            if {objects::enabled::*} contains {_parsed_arg}:
+            if ({particles::enabled::*} contains {_parsed_arg}):
                 disable_particle(player, {_parsed_arg})
             else:
                 enable_particle(player, {_parsed_arg})
@@ -40,17 +43,24 @@ on command "/hdm particle":
 
 
 on command "/hdm cleanup particle":
-    delete {particle::*}
     delete {particles::*}
+
     debug_message(player, "パーティクル機能のデータを消しました")
 
 
 on command "/hdm reset particle":
+    delete {particles::enabled::*}
+    reload script "/Hadume/assets/particles/"
+
     debug_message(player, "パーティクル機能のデータをリセットしました")
 
 
 on tab complete:
-    if event-string is "/hdm" or "/skript:hdm":
-        if tab arg-1 is {@function}:
-            set tab completions for position 2 to {objects::REGISTERED::*}
-            set tab completions for position 3 to "enable" and "disable"
+    if any:
+        event-string is not ("/hdm" or "/skript:hdm")
+        tab arg-1 is not {@function}
+    then:
+        stop
+
+    set tab completions for position 2 to {particles::REGISTERED::*}
+    set tab completions for position 3 to "enable" and "disable"

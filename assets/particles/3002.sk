@@ -1,0 +1,15 @@
+on load:
+    particle_register({@id})
+
+
+
+every tick:
+    if ({particles::enabled::*} does not contain {@id}):
+        stop
+
+    draw 1 end rod particle with offset vector(2.0, 2.0, 4.0) with extra value of 0 at location(-647.5, 100.0, 189.5)
+
+
+
+options:
+    id: 3002

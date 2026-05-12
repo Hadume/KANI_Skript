@@ -1,7 +1,0 @@
-on load:
-    if {objects::registered::*} do not contain 3010:
-        add 3010 to {objects::registered::*}
-
-every 2 ticks:
-    if {objects::enabled::*} contain 3010:
-        draw 1 ominous trial spawner detection particle with offset vector(2.0, 2.0, 2.0) with extra value of 0 at location(-603.5, 101.0, 365.5)

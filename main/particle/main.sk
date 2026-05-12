@@ -1,0 +1,5 @@
+function particle_register(id: number):
+    if ({particles::REGISTERED::*} contains {_id}):
+        stop
+
+    add {_id} to {particles::REGISTERED::*}

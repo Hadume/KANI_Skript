@@ -1,7 +1,0 @@
-on load:
-    if {objects::registered::*} do not contain 3001:
-        add 3001 to {objects::registered::*}
-
-every ticks:
-    if {objects::enabled::*} contain 3001:
-        force draw 5 falling obsidian tear particles with offset vector(12, 2, 20) with extra value of 1 at location(-501.5, 108.5, 257.5)

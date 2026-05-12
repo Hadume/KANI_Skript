@@ -2,13 +2,11 @@ on load:
     particle_register({@id})
 
 
-
 every 2 ticks:
     if ({particles::enabled::*} does not contain {@id}):
         stop
 
     draw 1 ominous trial spawner detection particle with offset vector(2.0, 2.0, 2.0) with extra value of 0 at location(-603.5, 101.0, 365.5)
-
 
 
 options:

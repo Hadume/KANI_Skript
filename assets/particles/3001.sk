@@ -2,13 +2,11 @@ on load:
     particle_register({@id})
 
 
-
 every tick:
     if ({particles::enabled::*} does not contain {@id}):
         stop
 
     force draw 5 falling obsidian tear particles with offset vector(12.0, 2.0, 20.0) with extra value of 1 at location(-501.5, 108.5, 257.5)
-
 
 
 options:

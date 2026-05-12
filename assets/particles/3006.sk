@@ -2,13 +2,11 @@ on load:
     particle_register({@id})
 
 
-
 every tick:
     if ({particles::enabled::*} does not contain {@id}):
         stop
 
     draw 1 enchanting particle with offset vector(3.0, 1.0, 1.5) with extra value of 0.01 at location(-521.5, 94.0, 196.5)
-
 
 
 options:

@@ -3,8 +3,7 @@ on load:
 
 
 every 2 ticks:
-    if ({particles::enabled::*} does not contain {@id}):
-        stop
+    exit if ({particles::enabled::*} does not contain {@id})
 
     draw 1 end rod particle with offset vector(5.0, 1.0, 2.0) with extra value of 0 at location(-599.5, 100.5, 176.5)
 

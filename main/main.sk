@@ -13,7 +13,6 @@ on load:
         execute console command "/team modify admin collisionRule pushOtherTeams"
 
 
-
 on player move:
     on_move_handler(player)
 

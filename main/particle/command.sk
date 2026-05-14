@@ -13,28 +13,27 @@ local function disable_particle(p: player, particle_id: number):
 
 
 on load:
-    if ({COMMANDS::*} contains {@function}):
-        stop
+    exit if ({COMMANDS::*} contains {@function})
 
     add {@function} to {COMMANDS::*}
 
 
 on command "/hdm particle":
-    set {_parsed_arg} to arg-2 parsed as number
+    set {_parsed_arg} to ((arg-2) parsed as number)
 
-    if ({particles::REGISTERED::*} contains {_parsed_arg}):
-        if arg-3 is "enable":
-            if ({particles::enabled::*} contains {_parsed_arg}):
+    if {particles::REGISTERED::*} contains {_parsed_arg}:
+        if (arg-3) is "enable":
+            if {particles::enabled::*} contains {_parsed_arg}:
                 debug_message(player, "&cそのパーティクルは表示されてるよ！")
             else:
                 enable_particle(player, {_parsed_arg})
-        else if (arg-3 is "disable"):
-            if ({particles::enabled::*} contains {_parsed_arg}):
+        else if (arg-3) is "disable":
+            if {particles::enabled::*} contains {_parsed_arg}:
                 disable_particle(player, {_parsed_arg})
             else:
                 debug_message(player, "&cそのパーティクルは表示されてないよ！")
         else:
-            if ({particles::enabled::*} contains {_parsed_arg}):
+            if {particles::enabled::*} contains {_parsed_arg}:
                 disable_particle(player, {_parsed_arg})
             else:
                 enable_particle(player, {_parsed_arg})
@@ -57,10 +56,10 @@ on command "/hdm reset particle":
 
 on tab complete:
     if any:
-        event-string is not ("/hdm" or "/skript:hdm")
-        tab arg-1 is not {@function}
+        (tab arg-1) is not {@function}
+        (event-string) is not ("/hdm" or "/skript:hdm")
     then:
-        stop
+        exit
 
     set tab completions for position 2 to {particles::REGISTERED::*}
-    set tab completions for position 3 to "enable" and "disable"
+    set tab completions for position 3 to ("enable" and "disable")

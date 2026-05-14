@@ -20,12 +20,6 @@ function on_gamemode_change_handler(p: player):
             hide the particles
             hide the icon
 
-    # else if name of {_p} is "kanykaniekany" or ".kani_kani1566":
-    #     add {_p} to team named "kani"
-
-    # else:
-    #     add {_p} to team named "admin"
-
 
 function on_right_click_handler(p: player, clicked_entity: entity):
     att_player_clicked_teller({_p}, {_clicked_entity})

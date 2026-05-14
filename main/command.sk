@@ -7,21 +7,19 @@ command /hdm <string> [<string>] [<string>] [<string>]:
     permission: skript.admin
     trigger:
         if any:
-            {COMMANDS::*} contains arg-1
-            arg-1 is ("reset" or "cleanup")
+            {COMMANDS::*} contains (arg-1)
+            (arg-1) is ("reset" or "cleanup")
         then:
-            stop
+            exit
 
         debug_message(player, "&cそんなコマンドは無いヨ！")
 
 
 on tab complete:
-    if (event-string is not ("/hdm" or "/skript:hdm")):
-        stop
+    exit if ((event-string) is not ("/hdm" or "/skript:hdm"))
 
-    set tab completions for position 1 to {COMMANDS::*}, "reset" and "cleanup"
+    set tab completions for position 1 to ({COMMANDS::*}, "reset" and "cleanup")
 
-    if (tab arg-1 is not ("reset" or "cleanup")):
-        stop
+    exit if ((tab arg-1) is not ("reset" or "cleanup"))
 
     set tab completions for position 2 to {COMMANDS::*}

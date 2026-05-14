@@ -1,18 +1,17 @@
 on load:
-    if {att::RESULTS::*} does not contain "{@id}":
-        add "{@id}" to {att::RESULTS::*}
+    exit if ({att::RESULTS::{@id}::*} is set)
+
+    set {att::RESULTS::{@id}} to true # とりあえずの登録
 
 
 function att_assets_kani_tume(p: player):
-    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.3>")
-
     execute console command "skin set kanykaniekany %{_p}%"
 
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.3>")
 
 
 function att_assets_reset_kani_tume(p: player):
     execute console command "skin clear %{_p}%"
-
 
 
 options:

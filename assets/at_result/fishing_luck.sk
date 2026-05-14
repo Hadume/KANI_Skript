@@ -1,18 +1,17 @@
 on load:
-    if {att::RESULTS::*} does not contain "{@id}":
-        add "{@id}" to {att::RESULTS::*}
+    exit if ({att::RESULTS::{@id}::*} is set)
+
+    set {att::RESULTS::{@id}} to true # とりあえずの登録
 
 
 function att_assets_fishing_luck(p: player):
+    apply (luck 0) to {_p} for 60 seconds
+
     att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.4>")
-
-    apply luck 0 to {_p} for 60 seconds
-
 
 
 function att_assets_reset_fishing_luck(p: player):
-    remove potion effect of luck from {_p}
-
+    remove (potion effect of luck) from {_p}
 
 
 options:

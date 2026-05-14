@@ -1,21 +1,18 @@
 on load:
-    if {att::RESULTS::*} does not contain "{@id}":
-        add "{@id}" to {att::RESULTS::*}
-        add 0.25, 0.5, 1.5 and 2.0 to {att::RESULTS::{@id}::*}
+    exit if ({att::RESULTS::{@id}::*} is set)
 
+    add (0.25, 0.5, 1.5 and 2.0) to {att::RESULTS::{@id}::*}
 
 
 function att_assets_random_height(p: player):
-    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.2>")
-
-    set {_rand} to random integer from 1 to size of {att::RESULTS::{@id}::*}
+    set {_rand} to random integer from 1 to (size of {att::RESULTS::{@id}::*})
     set scale attribute of {_p} to {att::RESULTS::{@id}::%{_rand}%}
 
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.2>")
 
 
 function att_assets_reset_random_height(p: player):
     set scale attribute of {_p} to 1.0
-
 
 
 options:

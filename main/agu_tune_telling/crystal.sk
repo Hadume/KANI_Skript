@@ -5,12 +5,11 @@ options:
 function att_cleanup_crystal():
     cancel task with id {att::core::crystal::task}
 
-    loop all armor stands:
-        if {entity::%uuid of loop-entity%::tags::*} does not contain "crystal":
-            continue
+    loop (all armor stands):
+        continue if {entity::%uuid of (loop-entity)%::tags::*} does not contain "crystal"
 
-        delete {entity::%uuid of loop-entity%::*}
-        delete loop-entity
+        delete {entity::%uuid of (loop-entity)%::*}
+        delete (loop-entity)
 
 
 function att_reset_crystal():
@@ -18,36 +17,35 @@ function att_reset_crystal():
 
     spawn armor stand at {@CRYSTAL_POS}:
         modify nbt of entity:
-            set byte tag "Marker" of nbt to 1
-            set byte tag "Silent" of nbt to 1
-            set byte tag "NoGravity" of nbt to 1
-            set byte tag "Invisible" of nbt to 1
-            set byte tag "NoBasePlate" of nbt to 1
-            set byte tag "Invulnerable" of nbt to 1
-            set float list tag "Rotation" of nbt to 45.0 and 0.0
-            set compound tag "equipment;head" of nbt to nbt from "{id: player_head, count: 1,components:{profile: {properties: [{name: textures}]}}}"
-            set string tag "equipment;head;components;profile;properties[0];value" of nbt to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODZmOTAxYmJkZThjZDY3NTIwZmEwYzdhZTQ2MWVlN2NhNjZjZTNjNGM0ODFjZDVjMTJmYjQzNzEyZWVhNmI2MyJ9fX0="
+            set (byte tag "Marker" of nbt) to 1
+            set (byte tag "Silent" of nbt) to 1
+            set (byte tag "NoGravity" of nbt) to 1
+            set (byte tag "Invisible" of nbt) to 1
+            set (byte tag "NoBasePlate" of nbt) to 1
+            set (byte tag "Invulnerable" of nbt) to 1
+            set (float list tag "Rotation" of nbt) to (45.0 and 0.0)
+            set (compound tag "equipment;head" of nbt) to nbt from "{id: player_head, count: 1,components:{profile: {properties: [{name: textures}]}}}"
+            set (string tag "equipment;head;components;profile;properties[0];value" of nbt) to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODZmOTAxYmJkZThjZDY3NTIwZmEwYzdhZTQ2MWVlN2NhNjZjZTNjNGM0ODFjZDVjMTJmYjQzNzEyZWVhNmI2MyJ9fX0="
         add "crystal" to {entity::%uuid of entity%::tags::*}
 
 
 function att_move_crystal():
-    loop all armor stands:
-        if {entity::%uuid of loop-entity%::tags::*} does not contain "crystal":
-            continue
+    loop (all armor stands):
+        set {_e} to (loop-entity)
+        continue if {entity::%uuid of {_e}%::tags::*} does not contain "crystal"
 
-        set {_loc} to location of loop-entity
+        set {_loc} to location of {_e}
         add (1.62 * 2) to y of {_loc}
-        draw 3 enchanting particles with offset vector(0.25, 0.25, 0.25) with extra value of 3 at {_loc}
+        show 3 enchanting particle with offset vector(0.25, 0.25, 0.25) with extra value of 3 at {_loc}
 
-        set {_loc} to location of loop-entity
-        add 20 to yaw of {_loc}
-        add 0.02 to y of {_loc}
-        teleport loop-entity to {_loc}
+        set {_loc2} to location of {_e}
+        add 20 to yaw of {_loc2}
+        add 0.02 to y of {_loc2}
+        teleport {_e} to {_loc2}
 
 
 function att_sound_crystal(sound: string, volume: number = 1.0, pitch: number = 1.0):
-    loop all armor stands:
-        if {entity::%uuid of loop-entity%::tags::*} does not contain "crystal":
-            continue
+    loop (all armor stands):
+        continue if {entity::%uuid of (loop-entity)%::tags::*} does not contain "crystal"
 
-        play sound {_sound} with volume {_volume} with pitch {_pitch} on location of loop-entity
+        play sound {_sound} with volume {_volume} with pitch {_pitch} on location of (loop-entity)

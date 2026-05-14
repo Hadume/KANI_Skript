@@ -6,42 +6,53 @@ options:
 
 
 function att_player_clicked_teller(p: player, clicked_entity: entity):
-    if {entity::%uuid of {_clicked_entity}%::tags::*} does not contain "teller":
-        exit
+    exit if ({entity::%uuid of {_clicked_entity}%::tags::*} does not contain "teller")
 
-    if {player::%uuid of {_p}%::att::timer} is set:
+    if {player::%uuid of {_p}%::att::timer} exists:
         att_message_teller_cooldown({_p})
         exit
 
-    if {att::core::task} is not set:
+    if {att::core::task} does not exist:
         att({_p})
 
 
 function att_player_every_second(p: player):
-    if {player::%uuid of {_p}%::att::timer} is not set:
-        exit
+    set {_p2} to uuid of {_p}
 
-    remove 1 from {player::%uuid of {_p}%::att::timer}
-    if {player::%uuid of {_p}%::att::timer} is smaller than 1:
-        message formatted "%nl%[%{_p}%] <red><lang:kani.npc.fortune_telling.dialogue.off>" to {_p}
-        play sound "block.beacon.deactivate" with volume 0.75 with pitch 1.25 to {_p}
-        att_reset_player({_p})
+    ##
+    exit if ({player::%{_p2}%::att::timer} does not exist)
+
+    remove 1 from {player::%{_p2}%::att::timer}
+
+    ##
+    exit if ({player::%{_p2}%::att::timer} is bigger than 1.0)
+
+    message formatted "%nl%[%{_p}%] <red><lang:kani.npc.fortune_telling.dialogue.off>" to {_p}
+    play sound "block.beacon.deactivate" with volume 0.75 with pitch 1.25 to {_p}
+    att_reset_player({_p})
 
 
 function att_reset_player(p: player):
-    run function "att_assets_reset_%{player::%uuid of {_p}%::att::result}%" with arguments {_p}
-    delete {player::%uuid of {_p}%::att::*}
+    set {_p2} to uuid of {_p}
+
+    ##
+    run function "att_assets_reset_%{player::%{_p2}%::att::result}%" with arguments {_p}
+    delete {player::%{_p2}%::att::*}
 
 
 function att_give_player_blessing(p: player, result: string):
-    set {player::%uuid of {_p}%::att::timer} to {@EFFECT_SECONDS}
-    set {player::%uuid of {_p}%::att::result} to {_result}
+    set {_p2} to uuid of {_p}
+
+    ##
+    set {player::%{_p2}%::att::timer} to {@EFFECT_SECONDS}
+    set {player::%{_p2}%::att::result} to {_result}
     run function "att_assets_%{_result}%" with arguments {_p}
     play sound "block.beacon.activate" with volume 0.75 with pitch 1.25 to {_p}
-    loop all armor stands:
-        if {entity::%uuid of loop-entity%::tags::*} does not contain "crystal":
-            continue
 
-        set {_loc} to location of loop-entity
+    ##
+    loop (all armor stands):
+        continue if ({entity::%uuid of (loop-entity)%::tags::*} does not contain "crystal")
+
+        set {_loc} to location of (loop-entity)
         add 1.62 to y of {_loc}
-        draw 10 explosion particles with offset vector(0.75, 0.75, 0.75) with extra value of 1.0 at {_loc}
+        draw 10 explosion particle with offset vector(0.75, 0.75, 0.75) with extra value of 1.0 at {_loc}

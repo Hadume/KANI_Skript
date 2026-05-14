@@ -1,5 +1,4 @@
 options:
-    count: {att::core::sound::loop}
     modded_count: mod({att::core::sound::loop}, 4)
     divided_count: floor({att::core::sound::loop} / 4)
 
@@ -51,7 +50,7 @@ function att_sound():
             cancel task with id {att::core::crystal::task}
             att_cleanup_sound()
 
-    add 1 to {@count}
+    add 1 to {att::core::sound::loop}
 
 
 local function melody(scale: string):
@@ -83,5 +82,5 @@ local function melody(scale: string):
         set {_pitch} to 10
     else if {_scale} is "F5":
         set {_pitch} to 11
-    if {_pitch} is set:
-        att_sound_crystal("block.note_block.bell", 1.0, 2 ^ ({_pitch} / 12))
+
+    att_sound_crystal("block.note_block.bell", 1.0, 2 ^ ({_pitch} / 12)) if ({_pitch} is set)

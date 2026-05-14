@@ -3,17 +3,19 @@ options:
 
 
 on load:
-    if {COMMANDS::*} does not contain {@function}:
-        add {@function} to {COMMANDS::*}
+    exit if {COMMANDS::*} contains {@function}
+
+    add {@function} to {COMMANDS::*}
 
 
 on command "/hdm agu-tune_telling":
     set {_p} to player(arg-2)
+
     if {_p} is alive:
-        if arg-3 is "_reset":
+        if (arg-3) is "_reset":
             att_reset_player({_p})
             debug_message(player, "%{_p}%の占い状態をリセットしました")
-        else if arg-3 is set:
+        else if (arg-3) is set:
             att({_p}, arg-3)
             debug_message(player, "%{_p}%に%arg-3%の占い結果を出します")
         else:
@@ -35,10 +37,11 @@ on command "/hdm reset agu-tune_telling":
 
 
 on tab complete:
-    if event-string is not "/hdm" or "/skript:hdm":
-        exit
-    if tab arg-1 is not {@function}:
+    if any:
+        (tab arg-1) is not {@function}
+        (event-string) is not ("/hdm" or "/skript:hdm")
+    then:
         exit
 
-    set tab completions for position 2 to all players
-    set tab completions for position 3 to {att::RESULTS::*} and "_reset"
+    set tab completions for position 2 to (all players)
+    set tab completions for position 3 to ({att::RESULTS::*} and "_reset")

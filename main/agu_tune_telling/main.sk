@@ -27,10 +27,10 @@ function att(told_player: player, result: string = "null"):
 
     set {att::core::loop} to 1
     if {att::RESULTS::*} does not contain {_result}:
-        set {_rand} to random integer from 1 to size of {att::RESULTS::*}
+        set {_rand} to random integer from 1 to (size of {att::RESULTS::*})
         set {_result} to {att::RESULTS::%{_rand}%}
 
-    run 0 ticks later repeating every 2 seconds and store id in {att::core::task}:
+    run (0 ticks) later repeating every (2 seconds) and store id in {att::core::task}:
         if {att::core::loop} is 1:
             att_message_teller("<lang:kani.npc.fortune_telling.dialogue.1>", volume: 1.0, pitch: 1.125)
         else if {att::core::loop} is 2:
@@ -42,10 +42,10 @@ function att(told_player: player, result: string = "null"):
             att_stare_teller_at("crystal")
             att_sound_crystal("block.portal.trigger", volume: 0.5, pitch: 1.25)
             set {att::core::sound::loop} to 0
-            run 0 ticks later repeating every 4 ticks and store id in {att::core::sound::task}:
-                att_sound()
-            run 0 ticks later repeating every tick and store id in {att::core::crystal::task}:
+            run (0 ticks) later repeating every (tick) and store id in {att::core::crystal::task}:
                 att_move_crystal()
+            run (0 ticks) later repeating every (4 ticks) and store id in {att::core::sound::task}:
+                att_sound()
         else if {att::core::loop} is 6:
             att_stare_teller_at("player")
             att_give_player_blessing({_told_player}, {_result})

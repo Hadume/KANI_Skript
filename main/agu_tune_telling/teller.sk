@@ -6,49 +6,45 @@ options:
 function att_cleanup_teller():
     execute console command "/npc remove teller"
 
-    loop all interactions:
-        if {entity::%uuid of loop-entity%::tags::*} does not contain "teller":
-            continue
+    loop (all interactions):
+        continue if ({entity::%uuid of (loop-entity)%::tags::*} does not contain "teller")
 
-        delete {entity::%uuid of loop-entity%::*}
-        delete loop-entity
+        delete {entity::%uuid of (loop-entity)%::*}
+        delete (loop-entity)
 
 
 function att_reset_teller():
     att_cleanup_teller()
 
     execute console command "/npc create teller --location %x of {@TELLER_POS}% %y of {@TELLER_POS}% %z of {@TELLER_POS}% --world %world of {@TELLER_POS}%"
-    att_stare_teller_at("crystal")
-    execute console command "/npc displayname teller @none"
     execute console command "/npc turn_to_player_distance teller 8"
     execute console command "/npc attribute teller set pose sitting"
     execute console command "/npc skin teller 05.agu.png"
     execute console command "/npc displayname teller &6< ! >"
+    att_stare_teller_at("crystal")
 
     spawn interaction at {@TELLER_POS}: # NPCでは、クリックしたプレイヤーを取得できないため、interactionで判定を代用
-        set interaction height of entity to 1.201
         set interaction width of entity to 0.601
+        set interaction height of entity to 1.201
         add "teller" to {entity::%uuid of entity%::tags::*}
 
 
-function att_stare_teller_at(thing: string):
-    if {_thing} is "player":
+function att_stare_teller_at(what: string):
+    if {_what} is "player":
         execute console command "/npc turn_to_player teller true"
-        exit
-    if {_thing} is "crystal":
+    else if {_what} is "crystal":
         execute console command "/npc rotate teller 0 11.25"
         execute console command "/npc turn_to_player teller false"
 
 
 function att_message_teller(message: string, volume: number = 0.75, pitch: number = 1.0):
-    loop all players:
-        if distance between loop-player and {@TELLER_POS} is bigger than 8:
-            continue
+    loop (all players):
+        continue if ((distance between (loop-player) and {@TELLER_POS}) is bigger than 8.0)
 
-        message formatted "%nl%%{@TELLER_NAME}% %{_message}%" to loop-player
+        message formatted "%nl%%{@TELLER_NAME}% %{_message}%" to (loop-player)
     play sound "entity.villager.ambient" with volume {_volume} with pitch {_pitch} on {@TELLER_POS}
 
 
 function att_message_teller_cooldown(p: player):
-    message formatted "%nl%%{@TELLER_NAME}% <lang:kani.npc.fortune_telling.dialogue.fail>" to {_p}
     play sound "entity.villager.no" with volume 0.75 with pitch 1.0 to {_p}
+    message formatted "%nl%%{@TELLER_NAME}% <lang:kani.npc.fortune_telling.dialogue.fail>" to {_p}

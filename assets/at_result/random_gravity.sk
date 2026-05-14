@@ -1,21 +1,18 @@
 on load:
-    if {att::RESULTS::*} does not contain "{@id}":
-        add "{@id}" to {att::RESULTS::*}
-        add 0.02, 0.04, 0.06, 0.1, 0.2 and 0.40 to {att::RESULTS::{@id}::*}
+    exit if ({att::RESULTS::{@id}::*} is set)
 
+    add (0.02, 0.04, 0.06, 0.1, 0.2 and 0.40) to {att::RESULTS::{@id}::*}
 
 
 function att_assets_random_gravity(p: player):
-    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.1>")
-
-    set {_rand} to random integer from 1 to size of {att::RESULTS::{@id}::*}
+    set {_rand} to random integer from 1 to (size of {att::RESULTS::{@id}::*})
     set gravity attribute of {_p} to {att::RESULTS::{@id}::%{_rand}%}
 
+    att_message_teller("<lang:kani.npc.fortune_telling.dialogue.result.1>")
 
 
 function att_assets_reset_random_gravity(p: player):
     set gravity attribute of {_p} to 0.08
-
 
 
 options:
